@@ -1,0 +1,26 @@
+### Maven / Spring Boot ###
+target/
+.mvn/wrapper/maven-wrapper.jar
+
+### Secrets / local config ###
+.env
+.env.local
+*.pem
+application-local.properties
+
+### IDE ###
+HELP.md
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+.idea/
+*.iml
+*.ipr
+.vscode/
+
+### OS ###
+.DS_Store
+Thumbs.db
