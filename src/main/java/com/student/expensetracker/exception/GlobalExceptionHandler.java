@@ -23,6 +23,7 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 import tools.jackson.databind.ObjectMapper;
 
 /** Maps every exception to the {@link ApiError} envelope so the client has one shape to parse. */
@@ -104,6 +105,13 @@ public class GlobalExceptionHandler {
                 "Bad Request",
                 "One or more parameters are invalid",
                 fieldErrors));
+    }
+
+    /** Unknown URL (e.g. GET / or a stale frontend path) must be a 404, not a 500. */
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<ApiError> handleNoResource(NoResourceFoundException ex) {
+        log.debug("Unknown path: {}", ex.getMessage());
+        return build(HttpStatus.NOT_FOUND, "The requested resource was not found");
     }
 
     @ExceptionHandler({
